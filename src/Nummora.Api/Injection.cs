@@ -1,6 +1,6 @@
 namespace Nummora.Api;
 
-public class Injection
+public static class Injection
 {
-    
+   
 }

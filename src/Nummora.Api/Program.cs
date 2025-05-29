@@ -1,4 +1,5 @@
 using Nummora.Api;
+using Nummora.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
+//services
+var configuration = builder.Configuration;
+
+builder.Services.AddInfrastructure(configuration);
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -15,7 +21,6 @@ if (app.Environment.IsDevelopment())
     app.UseScalarUi();
 }
 
-app.Run();
 
 app.UseHttpsRedirection();
 
@@ -24,3 +29,5 @@ app.UseAuthorization();
 
 //TODO: configurar cors
 app.UseCors();
+
+app.Run();
