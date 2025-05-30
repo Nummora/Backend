@@ -7,4 +7,8 @@ public class LoanContract
     public string InsuranceContract { get; set; }
     public DateTime CreateAt { get; set; }
     public DateTime UpdateAt { get; set; }
+    
+    //Relations
+    public Guid LoanId { get; set; }
+    public Loan Loan { get; set; }
 }

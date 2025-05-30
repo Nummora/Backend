@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <Folder Include="Abstractions\" />
-    <Folder Include="Services\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
   <ItemGroup>

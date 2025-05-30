@@ -10,12 +10,10 @@ public class UserWallet
     public DateTime UpdateAt { get; set; }
     public bool IsActive { get; set; }
     public bool IsDefault { get; set; }
+    public CurrencyType CurrencyType { get; set; }
     
     //Relations 
     public Guid UserId { get; set; }
     public User User { get; set; }
-    
-    public int CurrencyTypeId { get; set; }
-    public ICollection<CurrencyType> CurrencyTypes { get; set; }
     public ICollection<LoanParticipation> LoanParticipations { get; set; }
 }

@@ -14,7 +14,6 @@ public class LoanParticipation
     public Guid LoanId { get; set; }
     public Loan Loan { get; set; }
     
-    public Guid DebtorWalletId { get; set; }
-    public Guid LenderWalletId { get; set; }
+    public Guid UserWalletId { get; set; }
     public  UserWallet UserWallet { get; set; }
 }

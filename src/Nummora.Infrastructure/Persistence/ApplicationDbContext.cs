@@ -16,4 +16,57 @@ public class ApplicationDbContext : DbContext
     public DbSet<Debtor> Debtors { get; set; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base  (options)
     {}
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        //User Entity
+        modelBuilder.Entity<User>()
+            .HasMany(ud => ud.UserDocuments)
+            .WithOne(ud => ud.User)
+            .HasForeignKey(ud => ud.UserId);
+        
+        modelBuilder.Entity<User>()
+            .HasMany(l => l.Lenders)
+            .WithOne(l => l.User)
+            .HasForeignKey(l => l.UserId);
+        
+        modelBuilder.Entity<User>()
+            .HasMany(d => d.Debtors)
+            .WithOne(d => d.User)
+            .HasForeignKey(d => d.UserId);
+        
+        modelBuilder.Entity<User>()
+            .HasMany(uw => uw.UserWallets)
+            .WithOne(uw => uw.User)
+            .HasForeignKey(uw => uw.UserId);
+        
+        //Lender Entity
+        modelBuilder.Entity<Lender>()
+            .HasMany(lp => lp.LoanParticipations)
+            .WithOne(lp => lp.Lender)
+            .HasForeignKey(lp => lp.LenderId);
+        
+        //Loan Entity
+        modelBuilder.Entity<Loan>()
+            .HasMany(lf => lf.LoanFinancialDetails)
+            .WithOne(lf => lf.Loan)
+            .HasForeignKey(lf => lf.LoanId);
+
+        modelBuilder.Entity<Loan>()
+            .HasMany(lc => lc.LoanContracts)
+            .WithOne(lc => lc.Loan)
+            .HasForeignKey(lc => lc.LoanId);
+        
+        //Debtor Entity
+        modelBuilder.Entity<Debtor>()
+            .HasMany(Lp => Lp.LoanParticipations)
+            .WithOne(lp => lp.Debtor)
+            .HasForeignKey(lp => lp.DebtorId);
+        
+        //UserWallet Entity
+        modelBuilder.Entity<UserWallet>()
+            .HasMany(lp => lp.LoanParticipations)
+            .WithOne(lp => lp.UserWallet)
+            .HasForeignKey(lp => lp.UserWalletId);
+    }
 }

@@ -9,9 +9,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
+var cors = "NummoraCors";
+
 //services
 var configuration = builder.Configuration;
 
+builder.Services.AddApi();
 builder.Services.AddInfrastructure(configuration);
 
 var app = builder.Build();
@@ -28,6 +31,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 //TODO: configurar cors
-app.UseCors();
+app.UseCors(cors);
 
 app.Run();

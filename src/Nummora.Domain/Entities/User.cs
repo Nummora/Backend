@@ -20,11 +20,10 @@ public class User
     public DateTime UpdateAt { get; set; }
     public string NumberPhone { get; set; }
     public bool IsVerified { get; set; }
-    
-    //Relations
-    public int DocumentTypeId { get; set; }
+    public bool IsLender { get; set; }
     public DocumentType DocumentType { get; set; }
     
+    //Relations
     public ICollection<UserDocument> UserDocuments { get; set; }
     public ICollection<Lender> Lenders { get; set; }
     public ICollection<Debtor> Debtors { get; set; }
