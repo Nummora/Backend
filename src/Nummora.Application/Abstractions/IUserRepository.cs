@@ -10,4 +10,5 @@ public interface IUserRepository
     Task<User> CreateUser(UserRegisterDto userRegisterDto);
     Task UpdateUser(User user);
     Task DeleteUser(Guid id);
+    Task<User> Login(UserDto loginDto);
 }

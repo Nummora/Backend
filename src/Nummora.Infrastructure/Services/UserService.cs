@@ -55,4 +55,28 @@ public class UserService(IUserRepository _userRepository) : IUserService
     {
         throw new NotImplementedException();
     }
+
+    public async Task<Result<User>> LoginAsync(UserDto loginDto)
+    {
+        try
+        {
+            var user = await _userRepository.Login(loginDto);
+            Console.WriteLine($"logging attempt for user {user.Email}");
+
+            if (user == null)
+            {
+                return Result<User>.Failure("User not found");
+            }
+            
+            if (user.Password != loginDto.Password)
+            {
+                return Result<User>.Failure("Invalid credentials");
+            }
+            return Result<User>.Success(user, "User logged in");
+        }
+        catch (Exception e)
+        {
+            throw new Exceptions.InternalServerErrorException($"An error occurred logging in {e.InnerException?.Message ?? e.Message}");
+        }
+    }
 }

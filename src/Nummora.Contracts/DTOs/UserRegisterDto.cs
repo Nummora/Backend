@@ -19,4 +19,5 @@ public class UserRegisterDto
     public DocumentType DocumentType { get; set; }
     public string NumberDocument  { get; set; }
     public string NumberPhone { get; set; }
+   
 }

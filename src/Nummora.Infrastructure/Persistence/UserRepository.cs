@@ -41,4 +41,9 @@ public class UserRepository
     {
         throw new NotImplementedException();
     }
+
+    public async Task<User?> Login(UserDto loginDto)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
+    }
 }

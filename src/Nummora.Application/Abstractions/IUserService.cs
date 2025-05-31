@@ -10,4 +10,5 @@ public interface IUserService
     Task<Result<User>> GetUserByIdAsync(Guid id);
     Task<Result<User>> CreateUserAsync(UserRegisterDto userRegisterDto);
     Task<Result<User>> UpdateUserAsync(User user);
+    Task<Result<User>> LoginAsync(UserDto loginDto);
 }
