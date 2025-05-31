@@ -6,13 +6,13 @@ public class Result<T>
     public string Message { get; set; }
     public T? Data { get; set; }
     
-    public static Result<T> Success(bool IsSuccess, string Message)
+    public static Result<T> Success(T data, string message)
     {
-        return new Result<T> { IsSuccess = true, Message = Message };
+        return new Result<T> { IsSuccess = true, Message = message, Data = data};
     }
 
-    public static Result<T> Failure(bool IsSuccess, string Message)
+    public static Result<T> Failure(string message)
     {
-        return new Result<T> { IsSuccess = false, Message = Message };
+        return new Result<T> { IsSuccess = false, Message = message };
     }
 }

@@ -2,6 +2,7 @@ namespace Nummora.Domain.Entities;
 
 public class UserRole
 {
+    public Guid Id { get; set; }
     //Relations
     public Guid UserId { get; set; }
     public User User { get; set; }

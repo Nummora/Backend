@@ -6,9 +6,8 @@ namespace Nummora.Application.Abstractions;
 
 public interface IUserService
 {
-    Task<Result<List<User>>> GetUsers();
-    Task<Result<User>> GetUserById(Guid id);
-    Task<Result<User>> CreateUser(UserDto userDto);
-    Task<Result<User>> UpdateUser(User user);
-    Task<Result<User>> DeleteUser(Guid id);
+    Task<Result<List<User>>> GetUsersAsync();
+    Task<Result<User>> GetUserByIdAsync(Guid id);
+    Task<Result<User>> CreateUserAsync(UserRegisterDto userRegisterDto);
+    Task<Result<User>> UpdateUserAsync(User user);
 }

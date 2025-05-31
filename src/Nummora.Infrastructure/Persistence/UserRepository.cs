@@ -1,24 +1,35 @@
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Nummora.Application.Abstractions;
 using Nummora.Contracts.DTOs;
 using Nummora.Domain.Entities;
+using Nummora.Infrastructure.Data;
 
 namespace Nummora.Infrastructure.Persistence;
 
-public class UserRepository : IUserRepository
+public class UserRepository
+    (ApplicationDbContext _context, 
+        IMapper _mapper
+    ) : IUserRepository
 {
-    public Task<List<User>> GetUsers()
+    public async Task<List<User>> GetUsers()
     {
-        throw new NotImplementedException();
+        return await _context.Users.AsNoTracking()
+            .Include(u => u.UserWallets).ToListAsync();
     }
 
-    public Task<User> GetUserById(Guid id)
+    public async Task<User> GetUserById(Guid id)
     {
-        throw new NotImplementedException();
+        var result =  await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        return result!;
     }
 
-    public Task<User> CreateUser(UserDto userDto)
+    public async Task<User> CreateUser(UserRegisterDto userRegisterDto)
     {
-        throw new NotImplementedException();
+        var mapper = _mapper.Map<User>(userRegisterDto); 
+        await _context.Users.AddAsync(mapper);
+        await _context.SaveChangesAsync();
+        return mapper;
     }
 
     public Task UpdateUser(User user)
