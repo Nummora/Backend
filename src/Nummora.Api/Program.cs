@@ -1,4 +1,5 @@
 using Nummora.Api;
+using Nummora.Api.Config;
 using Nummora.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,13 +10,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-var cors = "NummoraCors";
+const string corsPolicy = "NummoraCors";
 
 //services
 var configuration = builder.Configuration;
 
-builder.Services.AddApi();
 builder.Services.AddInfrastructure(configuration);
+
+//Cors
+builder.Services.AddNummoraCors(corsPolicy);
+
 
 var app = builder.Build();
 
@@ -31,6 +35,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 //TODO: configurar cors
-app.UseCors(cors);
+app.UseCors(corsPolicy);
 
 app.Run();

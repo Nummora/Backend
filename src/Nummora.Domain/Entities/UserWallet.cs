@@ -1,4 +1,4 @@
-using Nummora.Domain.Enums;
+using Nummora.Contracts.Enums;
 
 namespace Nummora.Domain.Entities;
 

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Nummora.Domain.Entities;
 
-namespace Nummora.Infrastructure.Persistence;
+namespace Nummora.Infrastructure.Data;
 
 public class ApplicationDbContext : DbContext
 {
@@ -39,6 +39,17 @@ public class ApplicationDbContext : DbContext
             .HasMany(uw => uw.UserWallets)
             .WithOne(uw => uw.User)
             .HasForeignKey(uw => uw.UserId);
+        
+        modelBuilder.Entity<User>()
+            .HasMany(ur => ur.UserRoles)
+            .WithOne(ur => ur.User)
+            .HasForeignKey(ur => ur.UserId);
+        
+        //Role Entity
+        modelBuilder.Entity<Role>()
+            .HasMany(ur => ur.UserRoles)
+            .WithOne(ur => ur.Role)
+            .HasForeignKey(ur => ur.RoleId);
         
         //Lender Entity
         modelBuilder.Entity<Lender>()

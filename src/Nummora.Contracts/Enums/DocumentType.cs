@@ -1,4 +1,4 @@
-namespace Nummora.Domain.Enums;
+namespace Nummora.Contracts.Enums;
 
 public enum DocumentType
 {

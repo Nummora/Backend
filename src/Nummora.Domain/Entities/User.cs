@@ -1,5 +1,4 @@
-using System.Reflection.Metadata;
-using Nummora.Domain.Enums;
+using Nummora.Contracts.Enums;
 
 namespace Nummora.Domain.Entities;
 
@@ -20,7 +19,6 @@ public class User
     public DateTime UpdateAt { get; set; }
     public string NumberPhone { get; set; }
     public bool IsVerified { get; set; }
-    public bool IsLender { get; set; }
     public DocumentType DocumentType { get; set; }
     
     //Relations
@@ -28,4 +26,6 @@ public class User
     public ICollection<Lender> Lenders { get; set; }
     public ICollection<Debtor> Debtors { get; set; }
     public ICollection<UserWallet> UserWallets { get; set; }
+    
+    public ICollection<UserRole> UserRoles { get; set; }
 }
