@@ -15,9 +15,9 @@ public class UserRegisterDto
     public string? Email { get; set; }
     public string? Password { get; set; }
     public string? Description { get; set; }
-    
-    [JsonConverter(typeof(JsonStringEnumConverter))]
     public DocumentType DocumentType { get; set; }
+    
+    public UserRoleType Role { get; set; }
     public string? NumberDocument  { get; set; }
     public string? NumberPhone { get; set; }
    

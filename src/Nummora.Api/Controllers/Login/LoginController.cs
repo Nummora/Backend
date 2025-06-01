@@ -5,14 +5,14 @@ using Nummora.Contracts.DTOs;
 namespace Nummora.Api.Controllers.Login;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api")]
 public class LoginController(IUserService _userService) : ControllerBase
 {
     /// <summary>
     /// Login
     /// </summary>
     /// <returns></returns>
-    [HttpPost]
+    [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserDto loginDto, CancellationToken cancellationToken)
     {
         var result = await _userService.LoginAsync(loginDto, cancellationToken);

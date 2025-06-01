@@ -21,7 +21,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers()
-    .AddJsonOptions(opt => opt.JsonSerializerOptions.Converters.Add((new JsonStringEnumConverter())));
+    .AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.Converters.Add((new JsonStringEnumConverter()));
+        opt.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    });
 
 const string corsPolicy = "NummoraCors";
 

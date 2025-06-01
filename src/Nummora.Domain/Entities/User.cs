@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Nummora.Contracts.Enums;
 
 namespace Nummora.Domain.Entities;

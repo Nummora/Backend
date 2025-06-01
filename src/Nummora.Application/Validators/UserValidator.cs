@@ -1,5 +1,6 @@
 using FluentValidation;
 using Nummora.Contracts.DTOs;
+using Nummora.Domain;
 using Nummora.Domain.Entities;
 
 namespace Nummora.Application.Validators;

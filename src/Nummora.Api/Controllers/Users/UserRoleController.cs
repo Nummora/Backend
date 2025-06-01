@@ -6,15 +6,15 @@ using Nummora.Domain.Entities;
 namespace Nummora.Api.Controllers.Users;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api")]
 public class UserRoleController(IUserRolService _rolService) : ControllerBase
 {
     /// <summary>
     /// Add role to user
     /// </summary>
-    /// <param name="userRole"></param>
+    /// <param name="userRoleDto"></param>
     /// <returns></returns>
-    [HttpPost]
+    [HttpPost("users/roles")]
     public async Task<IActionResult> AddRolToUser([FromBody]UserRoleDto userRoleDto)
     {
         if (!ModelState.IsValid)

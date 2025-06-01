@@ -42,17 +42,17 @@ public class UserService(IUserRepository _userRepository, UserValidator userVali
         }
     }
 
-    public async Task<Result<User>> CreateUserAsync(UserRegisterDto userRegisterDto, CancellationToken cancellationToken = default)
+    public async Task<Result<object>> CreateUserAsync(UserRegisterDto user, CancellationToken cancellationToken = default)
     {
         try
         {
-            var validate = userValidator.Validate(userRegisterDto);
+            var validate = userValidator.Validate(user);
             if(!validate.IsValid)
-                return Result<User>.Failure(validate.Errors.ToString()??"It is not possible to create a user");
+                return Result<object>.Failure(validate.Errors.ToString()??"It is not possible to create a user");
 
             
-            var newUser = await _userRepository.CreateUser(userRegisterDto);
-            return Result<User>.Success(newUser, "User Created");
+            var newUser = await _userRepository.CreateUser(user);
+            return Result<object>.Success(newUser, "User Created");
         }
         catch (Exception e)
         {
@@ -96,7 +96,7 @@ public class UserService(IUserRepository _userRepository, UserValidator userVali
         }
     }
 
-    public async Task<Result<string>> UploadPhoto(Guid userId, IFormFile file, CancellationToken cancellationToken)
+    public async Task<Result<string>> UploadPhotoAsync(Guid userId, IFormFile file, CancellationToken cancellationToken)
     {
         try
         {
@@ -134,6 +134,59 @@ public class UserService(IUserRepository _userRepository, UserValidator userVali
         catch (Exceptions.IdNotFoundException ex)
         {
             return Result<string>.Failure(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            throw new Exceptions.InternalServerErrorException($"An error occurred while is uploading photo. {ex.InnerException?.Message ?? ex.Message}");
+        }
+    }
+
+    public async Task<Result<List<string>>> UploadPhotoOfDocument(Guid userId, List<IFormFile> file, CancellationToken cancellationToken)
+    {
+        try
+        {
+            if (file == null || !file.Any())
+                throw new ArgumentNullException(nameof(file));
+
+            var uploadUrls = new List<string>();
+
+            foreach (var item in file)
+            {
+                if(item.Length <= 0) continue;
+                
+                ImageUploadResult uploadResult;
+                await using var stream = item.OpenReadStream();
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(item.FileName, stream),
+                    Folder = $"/users/{userId}/document_photo",
+                    Transformation = new Transformation()
+                        .Width(600)
+                        .Height(400)
+                        .Crop("scale")
+                        .Chain()
+                        .Quality("auto")
+                        .FetchFormat("auto")
+                };
+
+                    uploadResult = await cloudinary.UploadAsync(uploadParams);
+                
+                if (uploadResult.Error != null)
+                    return Result<List<string>>.Failure(uploadResult.Error.Message);
+                
+                var urlPhoto = uploadResult.SecureUrl.AbsoluteUri;
+                uploadUrls.Add(urlPhoto);
+                
+                await _userRepository.UploadPhotoOfDocument(userId, urlPhoto, urlPhoto);
+
+                
+            }
+            return Result<List<string>>.Success(uploadUrls, "Document photo up");
+            
+        }
+        catch (Exceptions.IdNotFoundException ex)
+        {
+            return Result<List<string>>.Failure(ex.Message);
         }
         catch (Exception ex)
         {

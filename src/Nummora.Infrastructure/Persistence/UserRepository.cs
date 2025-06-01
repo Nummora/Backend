@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Nummora.Application.Abstractions;
 using Nummora.Contracts.DTOs;
+using Nummora.Contracts.Enums;
+using Nummora.Domain;
 using Nummora.Domain.Entities;
 using Nummora.Domain.Exceptions;
 using Nummora.Infrastructure.Data;
@@ -17,21 +19,45 @@ public class UserRepository
     public async Task<List<User>> GetUsers()
     {
         return await _context.Users.AsNoTracking()
-            .Include(u => u.UserWallets).ToListAsync();
+            .Include(u => u.UserWallets)
+            .Include(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role).ToListAsync();
     }
 
     public async Task<User> GetUserById(Guid id)
     {
-        var result =  await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        var result =  await _context.Users.AsNoTracking()
+            .Include(u => u.UserDocuments)
+            .Include(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role).FirstOrDefaultAsync(x => x.Id == id);
         return result!;
     }
-
-    public async Task<User> CreateUser(UserRegisterDto userRegisterDto)
+    
+    
+    private Guid GetRoleIdFromEnum(UserRoleType roleEnum)
     {
-        var mapper = _mapper.Map<User>(userRegisterDto); 
-        await _context.Users.AddAsync(mapper);
+        var roleEntity = _context.Roles.FirstOrDefault(r => r.Name == (Role.RoleUser)roleEnum);
+        return roleEntity?.Id ?? throw new Exception("Rol not found");
+    }
+    public async Task<object> CreateUser(UserRegisterDto user)
+    {
+        var users = _mapper.Map<User>(user);
+
+        users.UserRoles = new List<UserRole>
+        {
+            new UserRole
+            {
+                Id = Guid.NewGuid(),
+                UserId = Guid.Parse(user.Id),
+                RoleId = GetRoleIdFromEnum(user.Role),
+                CreateAt = DateTime.UtcNow,
+                UpdateAt = DateTime.UtcNow
+            }
+        };
+        
+        _context.Users.Add(users);
         await _context.SaveChangesAsync();
-        return mapper;
+        return users;
     }
 
     public async Task<User> UpdateUser(UserRegisterDto userRegisterDto)
@@ -68,5 +94,26 @@ public class UserRepository
         searchUser.Photo = photoUrl;
         await _context.SaveChangesAsync();
         return searchUser;
+    }
+
+    public async Task<object> UploadPhotoOfDocument(Guid userId, string frontPhotoUrl, string backPhotoUrl)
+    {
+        var existsUser = await _context.Users
+            .Include(u => u.UserDocuments).FirstOrDefaultAsync(u => u.Id == userId);
+        
+        if(existsUser == null)
+            throw new Exceptions.IdNotFoundException("User not found");
+
+        var userDocument = new UserDocument
+        {
+            FrontDocumentUrl = frontPhotoUrl,
+            BackDocumentUrl = backPhotoUrl,
+            UserId = userId,
+        };
+        
+        existsUser.UserDocuments.Add(userDocument);
+        
+        await _context.SaveChangesAsync();
+        return existsUser;
     }
 }

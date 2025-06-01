@@ -5,10 +5,10 @@ using Nummora.Domain;
 namespace Nummora.Api.Controllers.Roles;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api")]
 public class RoleCreateController(IRoleService _roleService) : ControllerBase
 {
-    [HttpPost]
+    [HttpPost("roles")]
     public async Task<OkObjectResult> CreateNewRole([FromBody] RoleCreateDto dto)
     {
         var result = await _roleService.CreateRoleAsync(dto);

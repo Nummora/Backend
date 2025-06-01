@@ -5,13 +5,13 @@ using Nummora.Domain.Entities;
 namespace Nummora.Api.Controllers.Users;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api")]
 public class UsersController(IUserService _userService) : ControllerBase
 {
     /// <summary>
     /// Get all users in Nummora
     /// </summary>
-    [HttpGet]
+    [HttpGet("users")]
     public async Task<IActionResult> GetAllUsers()
     {
         var result = await _userService.GetUsersAsync();
@@ -26,7 +26,7 @@ public class UsersController(IUserService _userService) : ControllerBase
     /// Get user by id
     /// </summary>
     /// <param name="id"></param>
-    [HttpGet("{id}")]
+    [HttpGet("users/{id}")]
     public async Task<IActionResult> GetUserById(Guid id, CancellationToken cancellationToken)
     {
         var result = await _userService.GetUserByIdAsync(id, cancellationToken);

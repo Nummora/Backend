@@ -4,7 +4,7 @@ using Nummora.Application.Abstractions;
 namespace Nummora.Api.Controllers.Users;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api")]
 public class UserDeleteController(IUserService _userService) : ControllerBase
 {
     /// <summary>
@@ -13,7 +13,7 @@ public class UserDeleteController(IUserService _userService) : ControllerBase
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpDelete("{id}")]
+    [HttpDelete("users/{id}")]
     public async Task<IActionResult> DeleteUserById(Guid id, CancellationToken cancellationToken)
     {
         var result = await _userService.DeleteUserAsync(id, cancellationToken);
