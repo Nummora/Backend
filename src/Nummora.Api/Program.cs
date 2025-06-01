@@ -71,11 +71,7 @@ builder.Services.AddScoped<UserValidator>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseScalarUi();
-}
-
+app.UseScalarUi();
 
 app.UseHttpsRedirection();
 
