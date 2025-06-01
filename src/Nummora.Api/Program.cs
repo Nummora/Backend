@@ -35,6 +35,7 @@ var configuration = builder.Configuration;
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
+
 builder.Services.Configure<CdnSettings>(opts => configuration
     .GetSection("CloudinarySettings").Bind(opts));
         
@@ -50,6 +51,11 @@ builder.Services.AddSingleton(c =>
     return new Cloudinary(account);
 });
 
+//Cors
+builder.Services.AddNummoraCors(corsPolicy);
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -59,10 +65,8 @@ builder.Services.AddScoped<IUserRolService, UserRoleService>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<UserValidator>();
 
-//Cors
-builder.Services.AddNummoraCors(corsPolicy);
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 
 var app = builder.Build();
