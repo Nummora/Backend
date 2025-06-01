@@ -72,7 +72,7 @@ public class UserService(IUserRepository _userRepository, UserValidator userVali
         return Result<User>.Success(user, "User updated");
     }
 
-    public async Task<Result<User>> LoginAsync(UserDto loginDto, CancellationToken cancellationToken = default)
+    public async Task<Result<LoginResponseDto>> LoginAsync(UserDto loginDto, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -81,14 +81,23 @@ public class UserService(IUserRepository _userRepository, UserValidator userVali
 
             if (user == null)
             {
-                return Result<User>.Failure("User not found");
+                return Result<LoginResponseDto>.Failure("User not found");
             }
             
             if (user.Password != loginDto.Password)
             {
-                return Result<User>.Failure("Invalid credentials");
+                return Result<LoginResponseDto>.Failure("Invalid credentials");
             }
-            return Result<User>.Success(user, "User logged in");
+
+            var role = user.UserRoles?.FirstOrDefault(ur => ur.Role != null)?.Role?.Name.ToString() ?? string.Empty;
+
+            var response = new LoginResponseDto
+            {
+                Email = user.Email,
+                Role = role
+            };
+            
+            return Result<LoginResponseDto>.Success(response, "User logged in");
         }
         catch (Exception e)
         {

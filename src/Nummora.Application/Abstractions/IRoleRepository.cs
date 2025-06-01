@@ -6,4 +6,5 @@ public interface IRoleRepository
 {
     Task<Role> CreateAsync(Role role);
     Task<bool> ExistsByNameAsync(Role.RoleUser name);
+    Task<List<Role>> GetRoles();
 }

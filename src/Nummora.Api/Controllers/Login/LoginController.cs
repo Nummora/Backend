@@ -20,6 +20,6 @@ public class LoginController(IUserService _userService) : ControllerBase
         if (!result.IsSuccess)
             Unauthorized(result.Message);
         
-        return Ok(result.Message);
+        return Ok(result.Data);
     }
 }

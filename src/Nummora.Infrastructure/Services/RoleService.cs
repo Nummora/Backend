@@ -30,4 +30,17 @@ public class RoleService(IRoleRepository _roleRepository) : IRoleService
             throw new Exceptions.InternalServerErrorException($"An error occurred while creating the role: {e.InnerException?.Message ?? e.Message}");
         }
     }
+
+    public async Task<Result<List<Role>>> GetRolesAsync()
+    {
+        try
+        {
+            var roles = await _roleRepository.GetRoles();
+            return Result<List<Role>>.Success(roles, "Roles retrieved successfully");
+        }
+        catch (Exception e)
+        {
+            throw new Exceptions.InternalServerErrorException($"An error occurred while creating the role: {e.InnerException?.Message ?? e.Message}");
+        }
+    }
 }

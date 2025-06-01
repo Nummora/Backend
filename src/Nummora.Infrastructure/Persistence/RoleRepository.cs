@@ -18,4 +18,10 @@ public class RoleRepository(ApplicationDbContext _context) : IRoleRepository
     {
         return await _context.Roles.AnyAsync(r => r.Name == name);
     }
+
+    public async Task<List<Role>> GetRoles()
+    {
+        var roles = await _context.Roles.ToListAsync();
+        return roles;
+    }
 }

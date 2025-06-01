@@ -6,4 +6,5 @@ namespace Nummora.Application.Abstractions;
 public interface IRoleService
 {
     Task<Result<Role>> CreateRoleAsync(RoleCreateDto dto);
+    Task<Result<List<Role>>> GetRolesAsync();
 }
