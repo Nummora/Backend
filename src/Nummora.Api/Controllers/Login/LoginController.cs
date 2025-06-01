@@ -12,10 +12,10 @@ public class LoginController(IUserService _userService) : ControllerBase
     /// Login
     /// </summary>
     /// <returns></returns>
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] UserDto loginDto)
+    [HttpPost]
+    public async Task<IActionResult> Login([FromBody] UserDto loginDto, CancellationToken cancellationToken)
     {
-        var result = await _userService.LoginAsync(loginDto);
+        var result = await _userService.LoginAsync(loginDto, cancellationToken);
         
         if (!result.IsSuccess)
             Unauthorized(result.Message);

@@ -21,7 +21,7 @@ namespace Nummora.Infrastructure.Migrations
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     NumberInstallments = table.Column<int>(type: "integer", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false)
+                    Status = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,7 +29,7 @@ namespace Nummora.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Role",
+                name: "Roles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -38,7 +38,7 @@ namespace Nummora.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Role", x => x.Id);
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -48,17 +48,17 @@ namespace Nummora.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     SecondName = table.Column<string>(type: "text", nullable: true),
-                    FirstLastName = table.Column<string>(type: "text", nullable: false),
+                    FirstLastName = table.Column<string>(type: "text", nullable: true),
                     SecondLastName = table.Column<string>(type: "text", nullable: true),
                     Age = table.Column<int>(type: "integer", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    Password = table.Column<string>(type: "text", nullable: true),
                     Photo = table.Column<string>(type: "text", nullable: true),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    NumberDocument = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    NumberDocument = table.Column<string>(type: "text", nullable: true),
                     CreateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    NumberPhone = table.Column<string>(type: "text", nullable: false),
+                    NumberPhone = table.Column<string>(type: "text", nullable: true),
                     IsVerified = table.Column<bool>(type: "boolean", nullable: false),
                     DocumentType = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -173,24 +173,26 @@ namespace Nummora.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserRole",
+                name: "UserRoles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     RoleId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRole", x => x.Id);
+                    table.PrimaryKey("PK_UserRoles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserRole_Role_RoleId",
+                        name: "FK_UserRoles_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Role",
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserRole_Users_UserId",
+                        name: "FK_UserRoles_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -229,7 +231,9 @@ namespace Nummora.Infrastructure.Migrations
                     DebtorId = table.Column<Guid>(type: "uuid", nullable: false),
                     LenderId = table.Column<Guid>(type: "uuid", nullable: false),
                     LoanId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserWalletId = table.Column<Guid>(type: "uuid", nullable: false)
+                    UserWalletId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -306,13 +310,13 @@ namespace Nummora.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_RoleId",
-                table: "UserRole",
+                name: "IX_UserRoles_RoleId",
+                table: "UserRoles",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_UserId",
-                table: "UserRole",
+                name: "IX_UserRoles_UserId",
+                table: "UserRoles",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -337,7 +341,7 @@ namespace Nummora.Infrastructure.Migrations
                 name: "UserDocuments");
 
             migrationBuilder.DropTable(
-                name: "UserRole");
+                name: "UserRoles");
 
             migrationBuilder.DropTable(
                 name: "Debtors");
@@ -352,7 +356,7 @@ namespace Nummora.Infrastructure.Migrations
                 name: "UserWallets");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Users");

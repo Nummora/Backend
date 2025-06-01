@@ -6,6 +6,8 @@ public class UserRole
     //Relations
     public Guid UserId { get; set; }
     public User User { get; set; }
+    public DateTime CreateAt { get; set; }
+    public DateTime UpdateAt { get; set; } 
     
     public Guid RoleId { get; set; }
     public Role Role { get; set; }

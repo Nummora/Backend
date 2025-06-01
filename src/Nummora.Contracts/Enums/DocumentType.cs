@@ -4,6 +4,7 @@ public enum DocumentType
 {
     None = 0,
     CC = 1,
-    TI = 2,
-    Passport = 3
+    CE = 2,
+    TI = 3,
+    PP = 4
 }

@@ -16,4 +16,6 @@ public class LoanParticipation
     
     public Guid UserWalletId { get; set; }
     public  UserWallet UserWallet { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }

@@ -9,11 +9,11 @@ public class UserWallet
     public DateTime CreateAt { get; set; }
     public DateTime UpdateAt { get; set; }
     public bool IsActive { get; set; }
-    public bool IsDefault { get; set; }
+    public bool IsDefault { get; set; } = true;
     public CurrencyType CurrencyType { get; set; }
     
     //Relations 
     public Guid UserId { get; set; }
     public User User { get; set; }
-    public ICollection<LoanParticipation> LoanParticipations { get; set; }
+    public virtual ICollection<LoanParticipation> LoanParticipations { get; set; }
 }

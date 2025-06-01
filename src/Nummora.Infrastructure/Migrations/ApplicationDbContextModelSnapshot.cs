@@ -81,8 +81,9 @@ namespace Nummora.Infrastructure.Migrations
                     b.Property<DateTime>("StartDateLoan")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -162,6 +163,9 @@ namespace Nummora.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<Guid>("DebtorId")
                         .HasColumnType("uuid");
 
@@ -170,6 +174,9 @@ namespace Nummora.Infrastructure.Migrations
 
                     b.Property<Guid>("LoanId")
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserWalletId")
                         .HasColumnType("uuid");
@@ -201,7 +208,7 @@ namespace Nummora.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("Nummora.Domain.Entities.User", b =>
@@ -217,18 +224,15 @@ namespace Nummora.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("DocumentType")
                         .HasColumnType("integer");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FirstLastName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FirstName")
@@ -239,15 +243,12 @@ namespace Nummora.Infrastructure.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("NumberDocument")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("NumberPhone")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Photo")
@@ -297,8 +298,14 @@ namespace Nummora.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -309,7 +316,7 @@ namespace Nummora.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRole");
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("Nummora.Domain.Entities.UserWallet", b =>

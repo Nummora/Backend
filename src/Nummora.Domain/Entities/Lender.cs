@@ -9,5 +9,5 @@ public class Lender
     public Guid UserId { get; set; }
     public User User { get; set; }
     
-    public ICollection<LoanParticipation> LoanParticipations { get; set; }
+    public virtual ICollection<LoanParticipation> LoanParticipations { get; set; }
 }

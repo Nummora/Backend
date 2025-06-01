@@ -1,8 +1,10 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Nummora.Application.Abstractions;
 using Nummora.Contracts.DTOs;
 using Nummora.Domain.Entities;
+using Nummora.Domain.Exceptions;
 using Nummora.Infrastructure.Data;
 
 namespace Nummora.Infrastructure.Persistence;
@@ -32,18 +34,39 @@ public class UserRepository
         return mapper;
     }
 
-    public Task UpdateUser(User user)
+    public async Task<User> UpdateUser(UserRegisterDto userRegisterDto)
     {
-        throw new NotImplementedException();
+        var existUser = await _context.Users.FirstOrDefaultAsync(u => u.Id.ToString() == userRegisterDto.Id);
+
+        if (existUser == null)
+            throw new Exceptions.IdNotFoundException("User not found");
+
+        _mapper.Map(userRegisterDto, existUser);
+        await _context.SaveChangesAsync();
+        return existUser;
     }
 
-    public Task DeleteUser(Guid id)
+    public async Task<User> DeleteUser(Guid id)
     {
-        throw new NotImplementedException();
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
+        return user;
     }
 
     public async Task<User?> Login(UserDto loginDto)
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
+    }
+
+    public async Task<User> UploadPhoto(Guid userId, string photoUrl)
+    {
+        var searchUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        if(searchUser == null)
+            throw new Exceptions.IdNotFoundException("User not found");
+
+        searchUser.Photo = photoUrl;
+        await _context.SaveChangesAsync();
+        return searchUser;
     }
 }

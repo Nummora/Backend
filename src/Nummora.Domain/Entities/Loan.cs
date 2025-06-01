@@ -13,6 +13,6 @@ public class Loan
     public LoanStatus Status { get; set; }
     
     //Relations
-    public ICollection<LoanFinancialDetail> LoanFinancialDetails { get; set; }
-    public ICollection<LoanContract> LoanContracts { get; set; }
+    public virtual ICollection<LoanFinancialDetail> LoanFinancialDetails { get; set; }
+    public virtual ICollection<LoanContract> LoanContracts { get; set; }
 }

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nummora.Domain.Entities;
 
 namespace Nummora.Infrastructure.Data;
@@ -14,6 +15,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<LoanParticipation> LoanParticipations { get; set; }
     public DbSet<Lender> Lenders { get; set; }
     public DbSet<Debtor> Debtors { get; set; }
+    public DbSet<UserRole> UserRoles { get; set; }
+    public DbSet<Role> Roles { get; set; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base  (options)
     {}
 
@@ -46,6 +49,7 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(ur => ur.UserId);
         
         //Role Entity
+        modelBuilder.Entity<Role>().ToTable("Roles");
         modelBuilder.Entity<Role>()
             .HasMany(ur => ur.UserRoles)
             .WithOne(ur => ur.Role)
@@ -67,6 +71,10 @@ public class ApplicationDbContext : DbContext
             .HasMany(lc => lc.LoanContracts)
             .WithOne(lc => lc.Loan)
             .HasForeignKey(lc => lc.LoanId);
+
+        modelBuilder.Entity<Loan>()
+            .Property(l => l.Status)
+            .HasConversion<string>();
         
         //Debtor Entity
         modelBuilder.Entity<Debtor>()

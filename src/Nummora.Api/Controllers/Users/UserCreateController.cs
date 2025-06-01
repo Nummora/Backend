@@ -13,9 +13,9 @@ public class UserCreateController(IUserService _userService) : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> CreateNewUser([FromBody]UserRegisterDto userRegisterDto)
+    public async Task<IActionResult> CreateNewUser([FromBody]UserRegisterDto userRegisterDto, CancellationToken cancellationToken)
     {
-        var result = await _userService.CreateUserAsync(userRegisterDto);
+        var result = await _userService.CreateUserAsync(userRegisterDto, cancellationToken);
         return Ok(result.Data);
     }
 }

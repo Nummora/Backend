@@ -8,7 +8,7 @@ public class Role
     public RoleUser Name { get; set; }
     public DateTime CreateAt { get; set; }
     
-    public ICollection<UserRole> UserRoles { get; set; }
+    public virtual ICollection<UserRole> UserRoles { get; set; }
 
     public enum RoleUser
     {

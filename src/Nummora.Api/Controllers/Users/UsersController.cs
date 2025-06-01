@@ -27,9 +27,9 @@ public class UsersController(IUserService _userService) : ControllerBase
     /// </summary>
     /// <param name="id"></param>
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetUserById(Guid id)
+    public async Task<IActionResult> GetUserById(Guid id, CancellationToken cancellationToken)
     {
-        var result = await _userService.GetUserByIdAsync(id);
+        var result = await _userService.GetUserByIdAsync(id, cancellationToken);
         return Ok(result.Data);
     }
 }
