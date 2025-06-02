@@ -67,6 +67,14 @@ builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRolService, UserRoleService>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+builder.Services.AddScoped<IUserWalletService, UserWalletService>();
+builder.Services.AddScoped<IUserWalletRepository, UserWalletRepository>();
+builder.Services.AddScoped<IDebtorRepository, DebtorRepository>();
+builder.Services.AddScoped<IDebtorService, DebtorService>();
+builder.Services.AddScoped<ILenderRepository, LenderRepository>();
+builder.Services.AddScoped<ILenderService, LenderService>();
+builder.Services.AddScoped<ILoanRepository, LoanRepository>();
+builder.Services.AddScoped<ILoanService, LoanService>();
 builder.Services.AddScoped<UserValidator>();
 
 

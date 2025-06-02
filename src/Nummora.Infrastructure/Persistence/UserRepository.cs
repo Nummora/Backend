@@ -29,7 +29,9 @@ public class UserRepository
         var result =  await _context.Users.AsNoTracking()
             .Include(u => u.UserDocuments)
             .Include(u => u.UserRoles)
-            .ThenInclude(ur => ur.Role).FirstOrDefaultAsync(x => x.Id == id);
+            .ThenInclude(ur => ur.Role)
+            .Include(u => u.UserWallets)
+            .FirstOrDefaultAsync(x => x.Id == id);
         return result!;
     }
     

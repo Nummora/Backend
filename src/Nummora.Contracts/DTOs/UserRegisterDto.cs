@@ -20,5 +20,8 @@ public class UserRegisterDto
     public UserRoleType Role { get; set; }
     public string? NumberDocument  { get; set; }
     public string? NumberPhone { get; set; }
+    
+    public string? WalletAddress { get; set; }
+    public CurrencyType? WalletCurrency { get; set; }
    
 }

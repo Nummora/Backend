@@ -9,7 +9,7 @@ public class UserWallet
     public DateTime CreateAt { get; set; }
     public DateTime UpdateAt { get; set; }
     public bool IsActive { get; set; }
-    public bool IsDefault { get; set; } = true;
+    public bool IsDefault { get; set; }
     public CurrencyType CurrencyType { get; set; }
     
     //Relations 

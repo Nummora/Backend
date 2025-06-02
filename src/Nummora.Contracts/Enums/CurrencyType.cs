@@ -3,10 +3,19 @@ namespace Nummora.Contracts.Enums;
 public enum CurrencyType
 {
     None = 0,
-    USD = 1,
-    EUR = 2,
-    GBP = 3,
-    AUD = 4,
-    CAD = 5,
-    CHF = 6
+    USDT = 1,
+    USDC = 2,
+    DAI = 3,
+    EURe = 4,
+    EURT = 5,
+    agEUR = 6,
+    GBPT = 7,
+    AUDT = 8,
+    XAUD = 9, 
+    QCAD = 10,
+    XCHF = 11,
+    AVAX = 12,
+    ETH = 13,
+    BNB = 14,
+    MATIC = 15
 }
