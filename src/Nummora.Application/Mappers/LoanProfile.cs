@@ -13,5 +13,8 @@ public class LoanProfile : Profile
         
         CreateMap<LoanParticipationDto, LoanParticipation>()
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+        
+        CreateMap<LoanContractDto, LoanContract>()
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 }

@@ -6,7 +6,9 @@ namespace Nummora.Application.Abstractions;
 public interface ILoanRepository
 {
     Task<List<LoanParticipation>> GetLoanParticipation();
-    Task<LoanParticipation> CreateLoanParticipation(LoanParticipationDto loanParticipationDto);
     Task<List<Loan>> GetLoans();
+    Task<List<LoanContract>> GetLoanContracts();
+    Task<LoanContract> CreateLoanContract(LoanContractDto loanContractDto, Guid loanId);
+    Task<LoanParticipation> CreateLoanParticipation(LoanParticipationDto loanParticipationDto);
     Task<Loan> CreateLoan(LoanDto loandto);
 }

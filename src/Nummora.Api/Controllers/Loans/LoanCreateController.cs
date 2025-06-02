@@ -22,4 +22,11 @@ public class LoanCreateController(ILoanService _loanService) : ControllerBase
         var result = await _loanService.CreateLoanParticipation(loanParticipationDto);
         return Ok(result.Data);
     }
+
+    [HttpPost("loancontracts")]
+    public async Task<IActionResult> CreateLoanContract(LoanContractDto loanContractDto, Guid loanId)
+    {
+        var result = await _loanService.CreateLoanContract(loanContractDto, loanId);
+        return Ok(result.Message);
+    }
 }

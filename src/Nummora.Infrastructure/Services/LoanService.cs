@@ -24,6 +24,24 @@ public class LoanService(ILoanRepository loanRepository) : ILoanService
         }
     }
 
+    public async Task<Result<LoanContract>> CreateLoanContract(LoanContractDto loanContractDto, Guid loanId)
+    {
+        try
+        {
+            if(loanContractDto == null)
+                return Result<LoanContract>.Failure("Loan data is required");
+            
+            
+            var loanContract = await loanRepository.CreateLoanContract(loanContractDto, loanId);
+            
+            return Result<LoanContract>.Success(loanContract,"Successfully retrieved loan participation");
+        }
+        catch (Exception e)
+        {
+            throw new Exceptions.InternalServerErrorException($"An error occurred {e.InnerException?.Message ?? e.Message}");
+        }
+    }
+
     public async Task<Result<LoanParticipation>> CreateLoanParticipation(LoanParticipationDto loanParticipationDto)
     {
         try
@@ -50,6 +68,22 @@ public class LoanService(ILoanRepository loanRepository) : ILoanService
                 return Result<List<Loan>>.Failure("Loan not found");
             
             return Result<List<Loan>>.Success(loan,"Successfully retrieved loan participation");
+        }
+        catch (Exception e)
+        {
+            throw new Exceptions.InternalServerErrorException($"An error occurred {e.InnerException?.Message ?? e.Message}");
+        }
+    }
+
+    public async Task<Result<List<LoanContract>>> GetLoanContracts()
+    {
+        try
+        {
+            var loanContract = await loanRepository.GetLoanContracts();
+            if(loanContract == null || !loanContract.Any())
+                return Result<List<LoanContract>>.Failure("Loan not found");
+            
+            return Result<List<LoanContract>>.Success(loanContract,"Successfully retrieved loan participation");
         }
         catch (Exception e)
         {

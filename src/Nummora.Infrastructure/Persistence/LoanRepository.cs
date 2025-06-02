@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Nummora.Application.Abstractions;
 using Nummora.Contracts.DTOs;
 using Nummora.Contracts.Enums;
+using Nummora.Domain;
 using Nummora.Domain.Entities;
 using Nummora.Infrastructure.Data;
 
@@ -18,6 +19,18 @@ public class LoanRepository(ApplicationDbContext _context, IMapper _mapper) : IL
             .Include(l => l.Lender)
             .Include(l => l.UserWallet).ToListAsync();
         return loan;
+    }
+
+    public async Task<LoanContract> CreateLoanContract(LoanContractDto loanContractDto, Guid loanId)
+    {
+        var loanContract = _mapper.Map<LoanContract>(loanContractDto);
+        loanContract.Id = Guid.NewGuid();
+        loanContract.CreateAt = DateTime.UtcNow;
+        loanContract.LoanId = loanId;
+        
+        _context.LoanContracts.Add(loanContract);
+        await _context.SaveChangesAsync();
+        return loanContract;
     }
 
     public async Task<LoanParticipation> CreateLoanParticipation(LoanParticipationDto loanParticipationDto)
@@ -39,6 +52,12 @@ public class LoanRepository(ApplicationDbContext _context, IMapper _mapper) : IL
             .Where(l => l.Status == LoanStatus.Pending).ToListAsync();
 
         return loan;
+    }
+
+    public async Task<List<LoanContract>> GetLoanContracts()
+    {
+        var loanContract = await _context.LoanContracts.Include(lc => lc.Loan).ToListAsync();
+        return loanContract;
     }
 
     public async Task<Loan> CreateLoan(LoanDto loandto)
