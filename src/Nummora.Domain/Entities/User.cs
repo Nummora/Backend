@@ -29,4 +29,6 @@ public class User
     public virtual ICollection<UserWallet> UserWallets { get; set; }
     
     public virtual ICollection<UserRole> UserRoles { get; set; }
+    
+    public virtual ICollection<UserToken> UserTokens { get; set; }
 }

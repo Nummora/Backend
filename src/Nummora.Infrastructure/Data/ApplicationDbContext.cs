@@ -17,6 +17,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Debtor> Debtors { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<Role> Roles { get; set; }
+    
+    public DbSet<UserToken> UserTokens { get; set; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base  (options)
     {}
 
@@ -47,6 +49,11 @@ public class ApplicationDbContext : DbContext
             .HasMany(ur => ur.UserRoles)
             .WithOne(ur => ur.User)
             .HasForeignKey(ur => ur.UserId);
+        
+        modelBuilder.Entity<User>()
+            .HasMany(ut => ut.UserTokens)
+            .WithOne(ut => ut.User)
+            .HasForeignKey(ut => ut.UserId);
         
         //Role Entity
         modelBuilder.Entity<Role>().ToTable("Roles");

@@ -10,7 +10,11 @@ using Nummora.Domain.Exceptions;
 
 namespace Nummora.Infrastructure.Services;
 
-public class UserService(IUserRepository _userRepository, UserValidator userValidator, Cloudinary cloudinary) : IUserService
+public class UserService(IUserRepository _userRepository, 
+    UserValidator userValidator, 
+    Cloudinary cloudinary,
+    ITokenService _tokenService,
+    ITokenRepository _tokenRepository) : IUserService
 {
     public async Task<Result<List<User>>> GetUsersAsync()
     {
@@ -90,11 +94,29 @@ public class UserService(IUserRepository _userRepository, UserValidator userVali
             }
 
             var role = user.UserRoles?.FirstOrDefault(ur => ur.Role != null)?.Role?.Name.ToString() ?? string.Empty;
+            var token = _tokenService.GenerateTokenAndRefreshToken();
+
+            var tokenEntity = new UserToken
+            {
+                UserId = user.Id,
+                AccessToken = token.accessToken,
+                RefreshToken = token.refreshToken,
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(60),
+                RefreshExpiresAt = DateTime.UtcNow.AddDays(7)
+            };
+
+            await _tokenRepository.SaveToken(tokenEntity);
 
             var response = new LoginResponseDto
             {
                 Email = user.Email,
-                Role = role
+                Role = role,
+                Token = new TokenDto
+                {
+                    AccessToken = token.accessToken,
+                    RefreshToken = token.refreshToken
+                }
             };
             
             return Result<LoginResponseDto>.Success(response, "User logged in");

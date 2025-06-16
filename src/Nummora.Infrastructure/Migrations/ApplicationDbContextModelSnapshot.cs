@@ -319,6 +319,41 @@ namespace Nummora.Infrastructure.Migrations
                     b.ToTable("UserRoles");
                 });
 
+            modelBuilder.Entity("Nummora.Domain.Entities.UserToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccessToken")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("RefreshExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserTokens");
+                });
+
             modelBuilder.Entity("Nummora.Domain.Entities.UserWallet", b =>
                 {
                     b.Property<Guid>("Id")
@@ -463,6 +498,17 @@ namespace Nummora.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Nummora.Domain.Entities.UserToken", b =>
+                {
+                    b.HasOne("Nummora.Domain.Entities.User", "User")
+                        .WithMany("UserTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Nummora.Domain.Entities.UserWallet", b =>
                 {
                     b.HasOne("Nummora.Domain.Entities.User", "User")
@@ -505,6 +551,8 @@ namespace Nummora.Infrastructure.Migrations
                     b.Navigation("UserDocuments");
 
                     b.Navigation("UserRoles");
+
+                    b.Navigation("UserTokens");
 
                     b.Navigation("UserWallets");
                 });

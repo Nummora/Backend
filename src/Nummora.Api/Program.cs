@@ -75,6 +75,8 @@ builder.Services.AddScoped<ILenderRepository, LenderRepository>();
 builder.Services.AddScoped<ILenderService, LenderService>();
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 builder.Services.AddScoped<ILoanService, LoanService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<UserValidator>();
 
 

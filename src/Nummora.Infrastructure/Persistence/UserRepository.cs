@@ -86,7 +86,8 @@ public class UserRepository
     {
         return await _context.Users
             .Include(u => u.UserRoles)
-            .ThenInclude(ur => ur.Role).FirstOrDefaultAsync(u => u.Email == loginDto.Email);
+            .ThenInclude(ur => ur.Role)
+            .Include(u => u.UserTokens).FirstOrDefaultAsync(u => u.Email == loginDto.Email);
     }
 
     public async Task<User> UploadPhoto(Guid userId, string photoUrl)
